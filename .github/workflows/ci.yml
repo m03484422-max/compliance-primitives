@@ -8,6 +8,9 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  # Pinned stellar CLI version — keep this in sync with the version documented
+  # in CONTRIBUTING.md and used by scripts/. Update it deliberately (see #831).
+  STELLAR_CLI_VERSION: "22.3.3"
 
 jobs:
   smoke-test:
@@ -22,7 +25,7 @@ jobs:
       - name: Cache cargo
         uses: Swatinem/rust-cache@v2
       - name: Install stellar CLI
-        run: cargo install --locked stellar-cli
+        run: cargo install --locked stellar-cli --version "$STELLAR_CLI_VERSION"
       - name: Run smoke test
         run: bash scripts/smoke-test.sh
 
@@ -173,7 +176,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
       - name: Install stellar CLI
         run: |
-          curl -s https://raw.githubusercontent.com/stellar/stellar-cli/master/install.sh | bash
+          cargo install --locked stellar-cli --version "$STELLAR_CLI_VERSION"
       - name: Cache cargo
         uses: Swatinem/rust-cache@v2
       - name: Regenerate interface docs

@@ -8,6 +8,9 @@
 #
 # Requires the `stellar` CLI and Docker. Exits non-zero if any deploy or invoke
 # step fails or returns an unexpected result.
+#
+# Pinned stellar CLI version: see .stellar-cli-version in the repository root.
+# Install via: cargo install --locked stellar-cli --version "$(cat .stellar-cli-version)"
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

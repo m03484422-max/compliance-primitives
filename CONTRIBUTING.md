@@ -9,6 +9,21 @@ contribution are also tagged `good first issue`.
 For details on how issues are triaged, labeled, and prioritized, see
 [GOVERNANCE.md](./GOVERNANCE.md).
 
+## Stellar CLI version
+
+Scripts and CI require the `stellar` CLI. The pinned version is recorded in
+[`.stellar-cli-version`](./.stellar-cli-version) at the repository root.
+Install it with:
+
+```sh
+cargo install --locked stellar-cli --version "$(cat .stellar-cli-version)"
+```
+
+Do not install the latest version without first checking that it is compatible
+with the workspace's pinned `soroban-sdk` version (see `Cargo.toml`). When the
+pinned version needs to change, update `.stellar-cli-version`, the `env:` block
+in `.github/workflows/ci.yml`, and add a note to `CHANGELOG.md`.
+
 ## Workflow
 
 1. **Fork** the repository and clone your fork.

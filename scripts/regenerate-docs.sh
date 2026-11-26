@@ -6,7 +6,9 @@
 #   scripts/regenerate-docs.sh
 #
 # Prerequisites:
-#   - stellar CLI installed and on PATH
+#   - stellar CLI installed and on PATH at the pinned version.
+#     Pinned version: see .stellar-cli-version in the repository root.
+#     Install via: cargo install --locked stellar-cli --version "$(cat .stellar-cli-version)"
 #   - wasm32v1-none target added (`rustup target add wasm32v1-none`)
 #
 # Output:
