@@ -1,4 +1,4 @@
-.PHONY: test doctest clippy fmt fmt-check lint build check-wasm-size check-accessibility check-all check-contracterror-discriminants
+.PHONY: test doctest clippy fmt fmt-check lint build optimize check-wasm-size check-accessibility check-all check-contracterror-discriminants
 
 # Mirrors the "cargo test" CI job (.github/workflows/ci.yml).
 test:
@@ -27,6 +27,22 @@ check-contracterror-discriminants:
 # Mirrors the "wasm32v1-none build" CI job.
 build:
 	cargo build --workspace --target wasm32v1-none --release
+
+# Build release WASM and then run `stellar contract optimize` on each contract,
+# producing *.optimized.wasm files in target/wasm32v1-none/release/.
+# This is the exact command used for official releases; contributors must run
+# `make optimize` before any release and commit the resulting size changes to
+# wasm-size-budgets.toml if they have grown (after team sign-off).
+#
+# Requires the stellar CLI (see CONTRIBUTING.md for the pinned version).
+optimize: build
+	@echo "Optimizing WASM binaries..."
+	@for wasm in target/wasm32v1-none/release/*.wasm; do \
+		out="$${wasm%.wasm}.optimized.wasm"; \
+		echo "  stellar contract optimize $$wasm -> $$out"; \
+		stellar contract optimize --wasm "$$wasm" --wasm-out "$$out"; \
+	done
+	@echo "Optimized files written to target/wasm32v1-none/release/*.optimized.wasm"
 
 # Mirrors the "wasm size budget" CI job.
 check-wasm-size:
